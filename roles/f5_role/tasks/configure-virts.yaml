@@ -11,3 +11,10 @@
   loop: "{{ virt_servers }}"
   notify: "config has changed"
 
+- name: Add iRules to Virtual Servers
+  bigip_virtual_server:
+    provider: "{{ provider }}"
+    name: "{{ item.name }}"
+    irules: "{{ item.irules }}"
+  loop: "{{ virt_servers }}"
+  when: item.irules is defined

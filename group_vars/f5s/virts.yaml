@@ -8,6 +8,8 @@ virt_servers:
     profiles:
       - http_xfwd
       - tcp
+    irules:
+      - HTTP_Log
   - name: "lb-srv-https"
     dest: "10.144.12.40"
     port: "443"
@@ -28,6 +30,9 @@ virt_servers:
       - tcp
       - name: lb-srv-auth
         context: client-side
+    irules:
+      - HTTP_Log
+      - Log_Cert_Fails
 
 
 add_forwarding_vs: True

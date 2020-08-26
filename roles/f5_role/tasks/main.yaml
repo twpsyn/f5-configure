@@ -39,6 +39,10 @@
   - import_tasks: configure-routing.yaml
     when: routes is defined
 
+  # Import iRules
+  - import_tasks: import-irules.yaml
+    when: irules is defined
+
   # Import SSL certificates and keys
   - import_tasks: import-ssls.yaml
     when: (certs is defined) or (keys is defined)

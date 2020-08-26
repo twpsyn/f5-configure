@@ -1,0 +1,11 @@
+---
+
+irules_path: "files/irules"
+
+irules:
+  - name: "HTTP_Log"
+    module: "ltm"
+    src: "HTTP_Log.tcl"
+  - name: "Log_Cert_Fails"
+    module: "ltm"
+    src: "Log_Cert_Fails.tcl"

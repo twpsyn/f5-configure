@@ -1,0 +1,10 @@
+---
+- name: Put iRules
+  bigip_irule:
+    module: "{{ item.module }}"
+    name: "{{ item.name }}"
+    src: "{{ irules_path }}/{{ item.src }}"
+    state: present
+    provider: "{{ provider }}"
+  loop: "{{ irules }}"
+    
