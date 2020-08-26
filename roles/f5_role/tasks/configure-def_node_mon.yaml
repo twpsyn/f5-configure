@@ -1,0 +1,15 @@
+---
+- name: Check Default Node Monitor
+  bigip_command:
+    provider: "{{ provider }}"
+    commands:
+      - "show running-config ltm default-node-monitor"
+  register: currDefaultNodeMonitor
+
+- name: Set Default Node Monitor
+  bigip_command:
+    provider: "{{ provider }}"
+    commands:
+      - "tmsh modify ltm default-node-monitor { rule /Common/gateway_icmp }"
+  when: default_node_monitor not in currDefaultNodeMonitor['stdout'][0]
+  notify: "config has changed"

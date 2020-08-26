@@ -1,0 +1,10 @@
+---
+- name: Add Static Routes
+  bigip_static_route:
+    provider: "{{ provider }}"
+    destination: "{{ item.dest }}"
+    netmask: "{{ item.mask }}"
+    gateway_address: "{{ item.gw }}"
+    name: "{{ item.name }}"
+  loop: "{{ routes }}"
+  notify: "config has changed"

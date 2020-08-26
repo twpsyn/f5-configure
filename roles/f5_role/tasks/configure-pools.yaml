@@ -1,0 +1,20 @@
+---
+- name: Add pools
+  bigip_pool:
+    name: "{{ item.name }}"
+    monitors: "{{item.monitors }}"
+    provider: "{{ provider }}"
+  loop: "{{ pools }}"
+  notify: "config has changed"
+
+- name: Add members to pools
+  bigip_pool_member:
+    name: "{{ item[1].name }}"
+    address: "{{ item[1].addr }}"
+    port: "{{ item[0].port }}"
+    pool: "{{ item[0].name }}"
+    provider: "{{ provider }}"
+  with_subelements:
+    - "{{ pools }}"
+    - members
+  notify: "config has changed"

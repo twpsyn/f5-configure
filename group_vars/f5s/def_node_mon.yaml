@@ -1,0 +1,3 @@
+---
+# Set the default node monitor, comment out to skip
+default_node_monitor: "gateway_icmp"

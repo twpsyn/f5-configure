@@ -1,0 +1,9 @@
+---
+- name: Create HTTP Profiles (xfwd)
+  bigip_profile_http:
+    provider: "{{ provider }}"
+    name: "{{ item.name }}"
+    insert_xforwarded_for: "{{ item.insert_xforwarded_for }}"
+  notify: "config has changed"
+  when: item.insert_xforwarded_for is defined
+  loop: "{{ http_profiles }}"

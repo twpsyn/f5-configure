@@ -1,0 +1,28 @@
+---
+- name: Add VLANs
+  bigip_vlan:
+    name: "{{ item.vlan.name }}"
+    #tag: "{{ item.vlan.tag }}"
+    untagged_interfaces: "{{ item.vlan.interfaces }}"
+    provider: "{{ provider }}"
+  loop: "{{ nets }}"
+  notify: "config has changed"
+
+- name: Add Self-IPs
+  bigip_selfip:
+    name: "{{ item.name }}"
+    address: "{{ item.address }}"
+    netmask: "{{ item.netmask }}"
+    vlan: "{{ item.vlan.name }}"
+    provider: "{{ provider }}"
+    allow_service: default
+  loop: "{{ nets }}"
+  notify: "config has changed"
+
+- name: Set CMI device parameters
+  bigip_device_connectivity:
+    config_sync_ip: "{{ config_sync_ip }}"
+    mirror_primary_address: "{{ mirror_primary_address }}"
+    unicast_failover: "{{ unicast_failover }}"
+    provider: "{{ provider }}"
+  notify: "config has changed"

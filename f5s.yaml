@@ -1,0 +1,16 @@
+---
+# file: f5s.yml
+- hosts: f5s
+  roles:
+    - f5_role
+  connection: local
+  gather_facts: false
+  collections:
+  - f5networks.f5_modules
+  vars_prompt:
+  - name: f5_username
+    prompt: "Enter F5 Username"
+    private: no
+    default: "{{ lookup('env','USER') }}"
+  - name: f5_password
+    prompt: "Enter F5 Password"

@@ -1,0 +1,12 @@
+---
+- name: Create IP-FWD virtual server
+  bigip_virtual_server:
+    provider: "{{ provider }}"
+    name: IP-FWD
+    type: forwarding-ip
+    destination: 0.0.0.0
+    ip_protocol: any
+    port: "0"
+    port_translation: no
+    snat: none
+  notify: "config has changed"

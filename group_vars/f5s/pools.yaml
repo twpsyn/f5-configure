@@ -1,0 +1,33 @@
+---
+pools:
+  - name: LabPool
+    monitors:
+      - "http"
+    members:
+      - name: "LabSrv01"
+        addr: "10.144.22.11"
+      - name: "LabSrv02"
+        addr: "10.144.22.12"
+      - name: "LabSrv03"
+        addr: "10.144.22.13"
+      - name: "LabSrv04"
+        addr: "10.144.22.14"
+    port: "80"
+  - name: pool2
+    monitors:
+      - "http"
+    members:
+      - name: "LabSrv01"
+        addr: "10.144.22.11"
+      - name: "LabSrv02"
+        addr: "10.144.22.12"
+    port: "80"
+  - name: LogPool
+    monitors:
+      - "tcp_half_open"
+    members:
+      - name: "LabLog01"
+        addr: "10.144.11.8"
+      - name: "LabLog02"
+        addr: "10.144.11.9"
+    port: "514"

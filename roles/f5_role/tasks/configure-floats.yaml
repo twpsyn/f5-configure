@@ -1,0 +1,12 @@
+---
+- name: Create Floating Addresses
+  bigip_selfip:
+    provider: "{{ provider }}"
+    name: "{{ item.name }}"
+    address: "{{ item.address }}"
+    netmask: "{{ item.netmask }}"
+    vlan: "{{ item.vlan }}"
+    allow_service: "{{ item.services }}"
+    traffic_group: "{{ item.traffic_group }}"
+  loop: "{{ floats }}"
+  notify: "config has changed"

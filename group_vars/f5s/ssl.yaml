@@ -1,0 +1,13 @@
+---
+keys_path: "files/ssl/ssl.key"
+certs_path: "files/ssl/ssl.crt"
+
+keys:
+  - lb-srv
+  - lb-srv-auth
+
+certs:
+  - lb-srv
+  - lb-srv-auth
+  - FreeIPA-CA
+

@@ -1,0 +1,36 @@
+---
+- name: Trust peer device
+  bigip_device_trust:
+    peer_server: "{{ hostvars[item].ansible_host }}"
+    peer_hostname: "{{ hostvars[item].inventory_hostname }}"
+    peer_user: "{{ f5_username }}"
+    peer_password: "{{ f5_password }}"
+    provider: "{{ provider }}"
+  loop: "{{ groups[group_names[0]][1:] }}"
+  notify: "config has changed"
+
+- name: Add Device Group
+  bigip_device_group:
+    name: "{{ device_group.name }}"
+    auto_sync: "{{ device_group.auto_sync }}"
+    type: "{{ device_group.type }}"
+    provider: "{{ provider }}"
+  notify: "config has changed"
+
+- name: Add members to the device group
+  bigip_device_group_member:
+    device_group: "{{ device_group.name }}"
+    name: "{{ item }}"
+    provider: "{{ provider }}"
+  loop: "{{ groups[group_names[0]] }}"
+  notify: "config has changed"
+
+- name: Perform initial sync
+  bigip_configsync_action:
+    device_group: "{{ device_group.name }}"
+    sync_device_to_group: yes
+    provider: "{{ provider }}"
+
+- name: Pausing for 5 seconds to give initial sync time to complete
+  pause:
+    seconds: 5

@@ -1,0 +1,13 @@
+---
+- name: Create Virtual Servers
+  bigip_virtual_server:
+    provider: "{{ provider }}"
+    name: "{{ item.name }}"
+    destination: "{{ item.dest }}"
+    port: "{{ item.port }}"
+    pool: "{{ item.pool }}"
+    snat: "{{ item.snat }}"
+    profiles: "{{ item.profiles }}"
+  loop: "{{ virt_servers }}"
+  notify: "config has changed"
+

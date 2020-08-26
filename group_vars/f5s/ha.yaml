@@ -1,0 +1,19 @@
+---
+device_group:
+  name: "Lab-DG"
+  type: "sync-failover"
+  auto_sync: no
+
+floats:
+  - name: "Float-Internal"
+    address: "10.144.22.1"
+    netmask: "255.255.255.0"
+    vlan: "Internal"
+    traffic_group: "traffic-group-1"
+    services: "default"
+  - name: "Float-External"
+    address: "10.144.12.40"
+    netmask: "255.255.255.0"
+    vlan: "External"
+    traffic_group: "traffic-group-1"
+    services: "default"

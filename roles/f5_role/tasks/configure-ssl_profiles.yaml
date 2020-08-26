@@ -1,0 +1,20 @@
+---
+- name: Create Client SSL Profiles
+  bigip_profile_client_ssl:
+    provider: "{{ provider }}"
+    name: "{{ item.name }}"
+    cert_key_chain:
+      - cert: "{{ item.cert }}"
+        key: "{{ item.key }}"
+  loop: "{{ client_ssl_profiles }}"
+  notify: "config has changed"
+
+- name: Configure Client Auth Profiles
+  bigip_profile_client_ssl:
+    provider: "{{ provider }}"
+    name: "{{ item.name }}"
+    client_certificate: "{{ item.client_auth }}"
+    trusted_cert_authority: "{{ item.trust_ca }}"
+  loop: "{{ client_ssl_profiles }}"
+  when: item.client_auth is defined
+  notify: "config has changed"

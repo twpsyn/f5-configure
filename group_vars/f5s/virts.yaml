@@ -1,0 +1,33 @@
+---
+virt_servers:
+  - name: "lb-srv"
+    dest: "10.144.12.40"
+    port: "80"
+    pool: "LabPool"
+    snat: "Automap"
+    profiles:
+      - http_xfwd
+      - tcp
+  - name: "lb-srv-https"
+    dest: "10.144.12.40"
+    port: "443"
+    pool: "LabPool"
+    snat: "Automap"
+    profiles:
+      - http_xfwd
+      - tcp
+      - name: lb-srv
+        context: client-side
+  - name: "lb-srv-auth"
+    dest: "10.144.12.45"
+    port: "443"
+    pool: "LabPool"
+    snat: "Automap"
+    profiles:
+      - http_xfwd
+      - tcp
+      - name: lb-srv-auth
+        context: client-side
+
+
+add_forwarding_vs: True

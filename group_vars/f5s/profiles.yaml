@@ -1,0 +1,14 @@
+---
+client_ssl_profiles:
+  - name: lb-srv
+    cert: lb-srv
+    key: lb-srv
+  - name: lb-srv-auth
+    cert: lb-srv-auth
+    key: lb-srv-auth
+    client_auth: require
+    trust_ca: FreeIPA-CA.crt
+
+http_profiles:
+  - name: http_xfwd
+    insert_xforwarded_for: yes

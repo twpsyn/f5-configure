@@ -1,0 +1,10 @@
+---
+routes:
+- name: default
+  dest: 0.0.0.0
+  mask: 0.0.0.0
+  gw: 10.144.12.1
+- name: lab_32
+  dest: 10.144.32.0
+  mask: 255.255.255.0
+  gw: 10.144.12.2

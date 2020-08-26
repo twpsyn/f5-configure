@@ -1,0 +1,68 @@
+---
+
+# Initial tasks to be done on all members
+- import_tasks: configure-nets.yaml
+
+
+# Dump hostvars if -vv flag is used
+- name: Dump hostvars
+  debug:
+    var: hostvars[inventory_hostname]
+    verbosity: 2
+
+### A note on the conditional in the following
+# inventory_hostname is the hostname of the device as taken from the inventory
+# group_names gives us the groups that the device is directly in
+# group_names[0] gives us the first item (group) from that list
+# groups[group_names[0]] gives us a list of hostnames in the group we identified above
+# groups[group_names[0]][0] gives us the first hostname in the group that we identified above
+#
+# **** THIS IS LIKELY TO BREAK IF ANY F5 IS IN MORE THAN ONE GROUP ****
+
+# Setup the HA group using the first device in the group
+- import_tasks: configure-ha.yaml
+  when: inventory_hostname == groups[group_names[0]][0]
+
+# Now for tasks that need to be done on the active member and then synced
+- name: Get failover status
+  bigip_command:
+    provider: "{{ provider }}"
+    commands:
+      - "tmsh show sys failover"
+  register: failoverStatus
+
+- name: Executing on Active member
+  block:
+  # Cluster networking - floats and static routes
+  - import_tasks: configure-floats.yaml
+    when: floats is defined
+  - import_tasks: configure-routing.yaml
+    when: routes is defined
+
+  # Import SSL certificates and keys
+  - import_tasks: import-ssls.yaml
+    when: (certs is defined) or (keys is defined)
+
+  # Configure client profiles
+  - import_tasks: configure-ssl_profiles.yaml
+    when: client_ssl_profiles is defined
+  - import_tasks: configure-http_profiles.yaml
+    when: http_profiles is defined
+
+  # Configure pools and nodes
+  - import_tasks: configure-def_node_mon.yaml
+    when: default_node_monitor is defined
+  - import_tasks: configure-pools.yaml
+    when: pools is defined
+
+  # Configure Virtual Servers
+  - import_tasks: configure-virts.yaml
+    when: virt_servers is defined
+  - import_tasks: configure-ipfwd.yaml
+    when: add_forwarding_vs
+
+
+  when: "'active' in failoverStatus['stdout'][0]"
+
+
+
